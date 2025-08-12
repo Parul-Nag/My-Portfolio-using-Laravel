@@ -38,6 +38,7 @@
     <!-- TailwindCSS (required) -->
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     <!-- Flowbite JS -->
+    <script src="https://unpkg.com/flowbite@1.6.4/dist/flowbite.js"></script>
     <script type="module" src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
     {{-- alpinejs --}}
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
