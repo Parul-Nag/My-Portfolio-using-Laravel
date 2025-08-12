@@ -1,42 +1,36 @@
-# Use official PHP image with Apache
-FROM php:8.2-apache
+# PHP 8.1 FPM image
+FROM php:8.1-fpm
 
-# Set working directory inside container
+# System dependencies install karein
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    git \
+    curl
+
+# PHP extensions install karein
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# Working directory set karein
 WORKDIR /var/www/html
 
-# Install system dependencies and PHP extensions needed for Laravel
-RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    libzip-dev \
-    zip \
-    curl \
-    npm \
-    && docker-php-ext-install zip pdo pdo_mysql
-
-# Enable Apache rewrite module
-RUN a2enmod rewrite
-
-# Install Composer globally
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Copy project files to container
+# Project files copy karein
 COPY . .
 
-# Install PHP dependencies with Composer
-RUN composer install --no-dev --optimize-autoloader
+# Composer install karein
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install Node.js and npm for Tailwind build (optional if already built locally)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get install -y nodejs
-RUN npm install
-RUN npm run build
+# Composer dependencies install karein
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Set permissions
+# Permissions set karein (optional)
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose port 80
-EXPOSE 80
+# Port expose karein
+EXPOSE 9000
 
-# Start Apache server
-CMD ["apache2-foreground"]
+# Run PHP-FPM
+CMD ["php-fpm"]
