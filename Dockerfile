@@ -16,6 +16,10 @@ WORKDIR /var/www
 # Copy Laravel project files
 COPY . .
 
+# Add a new user
+RUN adduser --disabled-password --gecos "" appuser
+USER appuser
+
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
