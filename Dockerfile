@@ -1,36 +1,42 @@
-# PHP 8.1 FPM image
-FROM php:8.1-fpm
+# Base PHP image with extensions
+FROM php:8.2-fpm
 
-# System dependencies install karein
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    curl \
     libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip \
-    git \
-    curl
+    libzip-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# PHP extensions install karein
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Working directory set karein
-WORKDIR /var/www/html
+# Set working directory
+WORKDIR /var/www
 
-# Project files copy karein
+# Copy app files
 COPY . .
 
-# Composer install karein
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
 
-# Composer dependencies install karein
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+# Copy Nginx config
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-# Permissions set karein (optional)
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Set permissions for Laravel
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www/storage \
+    && chmod -R 755 /var/www/bootstrap/cache
 
-# Port expose karein
-EXPOSE 9000
+# Expose port 80
+EXPOSE 80
 
-# Run PHP-FPM
-CMD ["php-fpm"]
+# Start Nginx and PHP-FPM
+CMD service php-fpm start && nginx -g "daemon off;"
