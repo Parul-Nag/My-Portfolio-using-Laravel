@@ -1,26 +1,30 @@
 FROM php:8.2-fpm
 
-# Install system dependencies
+# Install system dependencies + nginx + supervisor
 RUN apt-get update && apt-get install -y \
-    git unzip curl libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libxml2-dev zip libzip-dev nginx supervisor \
+    git unzip curl libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libxml2-dev zip libzip-dev \
+    nginx supervisor \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Set working directory
 WORKDIR /var/www
 
-# Copy app files
+# Copy Laravel project files
 COPY . .
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Copy Nginx config
+# Remove default nginx config and replace with Laravel config
+RUN rm /etc/nginx/sites-enabled/default || true
+RUN rm /etc/nginx/conf.d/default.conf || true
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-# Configure Supervisor
+# Copy Supervisor config
 COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Set permissions for Laravel
@@ -30,5 +34,5 @@ RUN chown -R www-data:www-data /var/www \
 
 EXPOSE 80
 
-# Start Supervisor (manages both Nginx & PHP-FPM)
+# Start both Nginx & PHP-FPM via Supervisor
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
