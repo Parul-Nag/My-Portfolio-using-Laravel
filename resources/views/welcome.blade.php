@@ -9,7 +9,7 @@
             <!-- Item 1 -->
             <div id="carousel-item-1" class="duration-2000 ease-in-out" data-carousel-item>
                 {{-- <img src="{{ asset('image/carousel3.gif') }}" --}}
-                <img src="{{ asset('image/developer.jpeg') }}"
+                <img src="{{ asset('image/Developer.jpeg') }}"
                     class="absolute block w-full h-full object-cover object-[40%_30%] mx-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                     alt="...">
                 <!-- Overlay -->
@@ -31,7 +31,7 @@
             </div>
             <!-- Item 2 -->
             <div id="carousel-item-2" class="duration-2000 ease-in-out" data-carousel-item>
-                <img src="{{ asset('image/developer2.jpeg') }}"
+                <img src="{{ asset('image/Developer2.jpeg') }}"
                     class="absolute block w-full h-full object-cover object-[50%_60%] mx-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                     alt="...">
                 <!-- Overlay -->
