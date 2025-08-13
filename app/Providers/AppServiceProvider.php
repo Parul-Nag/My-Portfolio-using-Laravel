@@ -20,8 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // 🚀 This will clear the config at the time of deployment only
-        Artisan::call('config:clear');
-        Artisan::call('cache:clear');
+        // Skip heavy logic during artisan commands in build
+        if (app()->runningInConsole()) {
+            return;
+        }
     }
 }
