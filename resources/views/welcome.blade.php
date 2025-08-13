@@ -457,7 +457,7 @@
                 </div>
 
                 <!-- Contact Form -->
-                <form action="{{ route('contact.store') }}" method="POST"
+                <form action="{{ url('contact') }}" method="POST"
                     class="bg-white shadow-lg rounded-lg p-6 space-y-4">
                     @csrf
                     <div>

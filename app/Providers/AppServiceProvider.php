@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
         // Skip heavy logic during artisan commands in build
         if (app()->runningInConsole()) {
             return;
+        }
+
+        if (env('FORCE_HTTPS', false)) {
+            URL::forceScheme('https');
         }
     }
 }
