@@ -8,5 +8,6 @@
 // import AOS from 'aos';
 // import 'flowbite';
 
+import '../css/app.css'
 
 

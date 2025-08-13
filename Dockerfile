@@ -1,3 +1,20 @@
+# 1) Node stage for building assets
+FROM node:18 AS assets
+WORKDIR /app
+
+# Copy only package files first to cache npm install
+COPY package*.json ./
+RUN npm ci
+
+# Copy rest of the frontend-related files
+COPY vite.config.* ./
+COPY tailwind.config.* postcss.config.* ./
+COPY resources ./resources
+
+# Build assets (Tailwind + Vite)
+RUN npm run build
+
+# 2) PHP stage for Laravel
 FROM php:8.2-cli
 
 # Install dependencies
@@ -20,6 +37,9 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Copy the rest of the application
 COPY . .
+
+# Copy built assets from Node stage
+COPY --from=assets /app/public/build ./public/build
 
 # Permissions for storage & cache
 RUN chmod -R 775 storage bootstrap/cache
