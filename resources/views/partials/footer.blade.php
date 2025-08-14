@@ -31,15 +31,11 @@
         <div>
             <h2 class="text-white text-lg p-2">Let’s Connect</h2>
             <div class="pb-5">
-                <a href="mailto:youremail@example.com"
+                <a href="mailto:nagparul1@gmail.com"
                     class="bg-pink-200 text-black px-4 py-2 rounded-lg hover:bg-pink-300 transition">
                     📧 Email Me
                 </a>
             </div>
-            {{-- <a href="/assets/ParulNag_Resume.pdf" target="_blank"
-                class="bg-green-200 text-black px-4 py-2 rounded-lg hover:bg-green-300 transition">
-                📄 Download Resume
-            </a> --}}
             <div>
                 <a href="https://www.linkedin.com/in/yourprofile" target="_blank"
                     class="bg-blue-200 text-black px-4 py-2 rounded-lg hover:bg-blue-300 transition">
