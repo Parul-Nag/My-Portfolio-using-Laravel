@@ -20,6 +20,8 @@ My Personal Portfolio – Built with Laravel, Tailwind CSS, and MySQL. A sleek, 
 | Database | MySQL|
 | Server/Tools | Vite, Composer|
 
-### *Screenshot*
+### *Portfolio Preview*
+
+![Portfolio Image](screenshots/portfolio_image.png)
 
 
